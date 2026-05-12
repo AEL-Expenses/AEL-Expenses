@@ -35,7 +35,6 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); background: #fff; }
 .field textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
 .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6860' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 .sub-date-row { display: flex; align-items: center; justify-content: space-between; }
 .sub-date-row .lbl { font-size: 11px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
 .sub-date-row .val { font-size: 13px; font-weight: 500; font-family: var(--mono); }
@@ -45,9 +44,16 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .line-lbl { font-size: 11px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
 .remove-btn { background: none; border: none; cursor: pointer; font-size: 12px; color: var(--text-faint); padding: 2px 6px; border-radius: 4px; }
 .remove-btn:hover { color: #a32d2d; background: #fdf0ef; }
-.line-total-row { display: none; justify-content: space-between; align-items: center; background: var(--bg); border-radius: var(--radius); padding: 8px 12px; margin-bottom: 12px; }
-.line-total-row .lbl { font-size: 11px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
-.line-total-row .val { font-family: var(--mono); font-size: 13px; font-weight: 500; }
+.tax-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.tax-box { background: var(--bg); border-radius: var(--radius); padding: 10px 12px; }
+.tax-box-inner { display: flex; align-items: center; justify-content: space-between; }
+.tax-box-left { display: flex; align-items: center; gap: 8px; }
+.tax-box input[type=checkbox] { width: 16px; height: 16px; cursor: pointer; }
+.tax-box label { font-size: 13px; font-weight: 500; cursor: pointer; }
+.tax-amt { font-size: 12px; color: var(--text-muted); font-family: var(--mono); }
+.line-total { display: none; justify-content: space-between; align-items: center; background: var(--accent); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 12px; }
+.line-total .lbl { font-size: 12px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: #fff; opacity: .7; }
+.line-total .val { font-family: var(--mono); font-size: 20px; font-weight: 500; color: #fff; }
 .add-btn { width: 100%; padding: 10px; font-family: var(--sans); font-size: 13px; font-weight: 500; border-radius: var(--radius); cursor: pointer; background: transparent; color: var(--text); border: 1px dashed var(--border-strong); margin-bottom: 1rem; }
 .add-btn:hover { background: var(--info-bg); }
 .sub-total-row { display: none; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 1rem; margin-bottom: 1rem; }
@@ -56,22 +62,20 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .err { font-size: 12px; color: #a32d2d; margin-bottom: 8px; display: none; }
 .btn-submit { width: 100%; padding: 11px; font-family: var(--sans); font-size: 14px; font-weight: 500; border-radius: var(--radius); cursor: pointer; background: var(--accent); color: #fff; border: none; }
 .btn-submit:hover { opacity: 0.85; }
-.confirm-green { background: var(--success-bg); border: 1px solid var(--success-border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
-.conf-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--success-border); }
-.conf-top .sublbl { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--success-text); opacity: .7; margin-bottom: 4px; }
-.conf-ref { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--success-text); letter-spacing: 2px; }
-.conf-submitted { font-size: 13px; font-weight: 500; color: var(--success-text); }
-.conf-added-lbl { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--success-text); opacity: .7; margin-bottom: 8px; }
-.conf-period { font-size: 22px; font-weight: 500; color: var(--success-text); margin-bottom: 4px; }
-.conf-cutoff { font-size: 13px; color: var(--success-text); opacity: .8; margin-bottom: 1.25rem; }
-.conf-meta { font-size: 13px; color: var(--success-text); line-height: 1.75; }
-.conf-line { border-bottom: 1px solid var(--success-border); padding: 8px 0; }
+.confirm-red { background: var(--danger-bg); border: 1px solid var(--danger-border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+.confirm-red .warn-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.confirm-red .warn-lbl { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: #791F1F; }
+.confirm-red .msg { font-size: 14px; color: var(--danger-text); line-height: 1.6; margin-bottom: 10px; }
+.confirm-red .subj-lbl { font-size: 11px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--danger-text); opacity: .7; margin-bottom: 4px; }
+.conf-subj { font-family: var(--mono); font-size: 15px; font-weight: 500; background: #fff; border: 1px solid var(--danger-border); border-radius: var(--radius); padding: 10px 14px; color: var(--danger-text); letter-spacing: 1px; display: block; }
+.confirm-red .note { font-size: 12px; color: var(--danger-text); opacity: .75; margin-top: 8px; }
+.confirm-green { background: var(--success-bg); border: 1px solid var(--success-border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+.conf-added-lbl { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--success-text); opacity: .7; margin-bottom: 6px; }
+.conf-period { font-size: 20px; font-weight: 500; color: var(--success-text); margin-bottom: 2px; }
+.conf-cutoff { font-size: 13px; color: var(--success-text); opacity: .8; margin-bottom: 1rem; }
+.conf-meta-wrap { border-top: 1px solid var(--success-border); padding-top: 1rem; }
+.conf-line { border-bottom: 1px solid var(--success-border); padding: 8px 0; font-size: 13px; color: var(--success-text); }
 .conf-line:last-child { border-bottom: none; }
-.confirm-red { background: var(--danger-bg); border: 1px solid var(--danger-border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1rem; }
-.confirm-red .ns-lbl { font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--danger-text); margin-bottom: 6px; }
-.confirm-red p { font-size: 13px; line-height: 1.6; color: var(--danger-text); }
-.conf-subj { font-family: var(--mono); font-size: 14px; background: #fff; border: 1px solid var(--danger-border); border-radius: var(--radius); padding: 10px 12px; margin-top: 8px; font-weight: 500; word-break: break-all; color: var(--danger-text); display: block; }
-.confirm-red .note { font-size: 12px; color: var(--danger-text); opacity: .8; margin-top: 8px; }
 .btn-reset { width: 100%; padding: 10px; font-family: var(--sans); font-size: 13px; border-radius: var(--radius); cursor: pointer; background: transparent; border: 1px solid var(--border-strong); color: var(--text); }
 .btn-reset:hover { background: var(--bg); }
 .footer { margin-top: 1.5rem; text-align: center; font-size: 11px; color: var(--text-faint); font-family: var(--mono); }
@@ -90,8 +94,8 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div id="form-view">
     <div class="card">
       <div class="row2" style="margin-bottom:12px;">
-        <div class="field"><label>First name</label><input type="text" id="fname" placeholder="Juan" autocomplete="given-name"></div>
-        <div class="field"><label>Last name</label><input type="text" id="lname" placeholder="Dela Cruz" autocomplete="family-name"></div>
+        <div class="field"><label>First name</label><input type="text" id="fname" autocomplete="given-name"></div>
+        <div class="field"><label>Last name</label><input type="text" id="lname" autocomplete="family-name"></div>
       </div>
       <div class="sub-date-row">
         <span class="lbl">Submission date</span>
@@ -114,28 +118,24 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   </div>
 
   <div id="confirm-view" style="display:none;">
-    <div class="confirm-green">
-      <div class="conf-top">
-        <div>
-          <div class="sublbl">Reference</div>
-          <div class="conf-ref" id="conf-ref"></div>
-        </div>
-        <div style="text-align:right;">
-          <div class="sublbl">Submitted</div>
-          <div class="conf-submitted" id="conf-submitted"></div>
-        </div>
+    <div class="confirm-red">
+      <div class="warn-hdr">
+        <span style="font-size:16px;">&#9888;&#65039;</span>
+        <span class="warn-lbl">Next step — action required</span>
       </div>
-      <div class="conf-added-lbl">Your expense will be added to</div>
-      <div class="conf-period" id="conf-period"></div>
-      <div class="conf-cutoff" id="conf-cutoff"></div>
-      <div class="conf-meta" id="conf-meta"></div>
+      <div class="msg">Email your receipts to <strong>ap@airborneengines.com</strong></div>
+      <div class="subj-lbl">Subject line</div>
+      <span class="conf-subj" id="conf-subj"></span>
+      <div class="note">Attach all receipts before the cutoff date shown below.</div>
     </div>
 
-    <div class="confirm-red">
-      <div class="ns-lbl">⚠️ Next step — email your receipts</div>
-      <p>Send all receipts to <strong>ap@airborneengines.com</strong> with the subject line:</p>
-      <span class="conf-subj" id="conf-subj"></span>
-      <div class="note">Your expense will be processed in the payroll period shown above.</div>
+    <div class="confirm-green">
+      <div class="conf-added-lbl">Once approved, it should be added to:</div>
+      <div class="conf-period" id="conf-period"></div>
+      <div class="conf-cutoff" id="conf-cutoff"></div>
+      <div class="conf-meta-wrap">
+        <div id="conf-meta"></div>
+      </div>
     </div>
 
     <button class="btn-reset" onclick="resetForm()">Submit another expense</button>
@@ -190,6 +190,46 @@ function genId() {
   el.style.display = '';
 })();
 
+function calcLineTotal(idx) {
+  var amt = parseFloat(document.getElementById('amt-' + idx).value) || 0;
+  var gstCb = document.getElementById('gst-' + idx);
+  var pstCb = document.getElementById('pst-' + idx);
+  var gst = gstCb && gstCb.checked ? Math.round(amt * 0.05 * 100) / 100 : 0;
+  var pst = pstCb && pstCb.checked ? Math.round(amt * 0.07 * 100) / 100 : 0;
+  var total = Math.round((amt + gst + pst) * 100) / 100;
+  var gstAmtEl = document.getElementById('gst-amt-' + idx);
+  var pstAmtEl = document.getElementById('pst-amt-' + idx);
+  if (gstAmtEl) gstAmtEl.textContent = gst > 0 ? '($' + gst.toFixed(2) + ')' : '';
+  if (pstAmtEl) pstAmtEl.textContent = pst > 0 ? '($' + pst.toFixed(2) + ')' : '';
+  var lt = document.getElementById('lt-' + idx);
+  var lta = document.getElementById('lta-' + idx);
+  if (lt && lta) {
+    if (amt > 0) { lta.textContent = '$' + total.toFixed(2); lt.style.display = 'flex'; }
+    else { lt.style.display = 'none'; }
+  }
+  calcSubTotal();
+}
+
+function calcSubTotal() {
+  var items = document.querySelectorAll('#line-items > div');
+  var grand = 0;
+  for (var i = 0; i < items.length; i++) {
+    var id = items[i].id.replace('line-', '');
+    var amt = parseFloat(document.getElementById('amt-' + id).value) || 0;
+    var gstCb = document.getElementById('gst-' + id);
+    var pstCb = document.getElementById('pst-' + id);
+    var gst = gstCb && gstCb.checked ? Math.round(amt * 0.05 * 100) / 100 : 0;
+    var pst = pstCb && pstCb.checked ? Math.round(amt * 0.07 * 100) / 100 : 0;
+    grand += Math.round((amt + gst + pst) * 100) / 100;
+  }
+  grand = Math.round(grand * 100) / 100;
+  var row = document.getElementById('sub-total-row');
+  if (items.length > 1 && grand > 0) {
+    document.getElementById('sub-total-amt').textContent = '$' + grand.toFixed(2);
+    row.style.display = 'flex';
+  } else { row.style.display = 'none'; }
+}
+
 function addLine() {
   lineCount++;
   var idx = lineCount;
@@ -223,23 +263,45 @@ function addLine() {
   });
   wrap.appendChild(mf('Category', cs));
 
-  var r3 = document.createElement('div'); r3.className = 'row3 field';
-  [['Amount (CAD)', 'amt-' + idx], ['GST (optional)', 'gst-' + idx], ['PST (optional)', 'pst-' + idx]].forEach(function(fd) {
-    var f = document.createElement('div');
-    var l = document.createElement('label'); l.textContent = fd[0];
-    var inp = document.createElement('input'); inp.type = 'number'; inp.id = fd[1]; inp.placeholder = '0.00'; inp.min = '0'; inp.step = '0.01';
-    inp.addEventListener('input', function() { calcLineTotal(idx); calcSubTotal(); });
-    f.appendChild(l); f.appendChild(inp); r3.appendChild(f);
-  });
-  wrap.appendChild(r3);
+  var amtF = document.createElement('div'); amtF.className = 'field';
+  var amtL = document.createElement('label'); amtL.textContent = 'Amount (CAD)';
+  var amtI = document.createElement('input');
+  amtI.type = 'number'; amtI.id = 'amt-' + idx; amtI.placeholder = '0.00'; amtI.min = '0'; amtI.step = '0.01';
+  amtI.addEventListener('input', function() { calcLineTotal(idx); });
+  amtF.appendChild(amtL); amtF.appendChild(amtI);
+  wrap.appendChild(amtF);
 
-  var lt = document.createElement('div'); lt.className = 'line-total-row'; lt.id = 'lt-' + idx;
+  var taxRow = document.createElement('div'); taxRow.className = 'tax-row';
+
+  function makeTaxBox(labelText, cbId, amtId, pct) {
+    var f = document.createElement('div'); f.className = 'tax-box';
+    var inner = document.createElement('div'); inner.className = 'tax-box-inner';
+    var left = document.createElement('div'); left.className = 'tax-box-left';
+    var cb = document.createElement('input'); cb.type = 'checkbox'; cb.id = cbId;
+    cb.addEventListener('change', function() { calcLineTotal(idx); });
+    var lbl2 = document.createElement('label'); lbl2.htmlFor = cbId;
+    lbl2.className = 'tax-box label';
+    lbl2.style.cssText = 'font-size:13px;font-weight:500;cursor:pointer;';
+    lbl2.textContent = labelText + ' (' + pct + '%)';
+    left.appendChild(cb); left.appendChild(lbl2);
+    var amtSpan = document.createElement('span'); amtSpan.id = amtId; amtSpan.className = 'tax-amt';
+    inner.appendChild(left); inner.appendChild(amtSpan);
+    f.appendChild(inner); return f;
+  }
+
+  taxRow.appendChild(makeTaxBox('GST', 'gst-' + idx, 'gst-amt-' + idx, 5));
+  taxRow.appendChild(makeTaxBox('PST', 'pst-' + idx, 'pst-amt-' + idx, 7));
+  wrap.appendChild(taxRow);
+
+  var lt = document.createElement('div'); lt.className = 'line-total'; lt.id = 'lt-' + idx;
   var ltl = document.createElement('span'); ltl.className = 'lbl'; ltl.textContent = 'Line total';
   var lta = document.createElement('span'); lta.className = 'val'; lta.id = 'lta-' + idx;
-  lt.appendChild(ltl); lt.appendChild(lta); wrap.appendChild(lt);
+  lt.appendChild(ltl); lt.appendChild(lta);
+  wrap.appendChild(lt);
 
-  var ta = document.createElement('textarea'); ta.id = 'desc-' + idx; ta.placeholder = 'Vendor, purpose, trip details, etc.';
-  wrap.appendChild(mf('Description', ta));
+  var dta = document.createElement('textarea');
+  dta.id = 'desc-' + idx; dta.placeholder = 'Vendor, purpose, trip details, etc.';
+  wrap.appendChild(mf('Description', dta));
 
   document.getElementById('line-items').appendChild(wrap);
   calcSubTotal();
@@ -254,30 +316,6 @@ function removeLine(idx) {
     if (l) l.textContent = 'Expense ' + (i + 1);
   }
   calcSubTotal();
-}
-
-function calcLineTotal(idx) {
-  var a = parseFloat(document.getElementById('amt-' + idx).value) || 0;
-  var g = parseFloat(document.getElementById('gst-' + idx).value) || 0;
-  var p = parseFloat(document.getElementById('pst-' + idx).value) || 0;
-  var t = a + g + p;
-  var lt = document.getElementById('lt-' + idx);
-  if (t > 0) { document.getElementById('lta-' + idx).textContent = '$' + t.toFixed(2); lt.style.display = 'flex'; }
-  else { lt.style.display = 'none'; }
-}
-
-function calcSubTotal() {
-  var items = document.querySelectorAll('#line-items > div');
-  var grand = 0;
-  for (var i = 0; i < items.length; i++) {
-    var id = items[i].id.replace('line-', '');
-    grand += (parseFloat(document.getElementById('amt-' + id).value) || 0)
-           + (parseFloat(document.getElementById('gst-' + id).value) || 0)
-           + (parseFloat(document.getElementById('pst-' + id).value) || 0);
-  }
-  var row = document.getElementById('sub-total-row');
-  if (items.length > 1 && grand > 0) { document.getElementById('sub-total-amt').textContent = '$' + grand.toFixed(2); row.style.display = 'flex'; }
-  else { row.style.display = 'none'; }
 }
 
 function submitAll() {
@@ -295,14 +333,17 @@ function submitAll() {
     var edate = document.getElementById('edate-' + id).value;
     var cat = document.getElementById('cat-' + id).value;
     var amt = parseFloat(document.getElementById('amt-' + id).value);
-    var gst = parseFloat(document.getElementById('gst-' + id).value) || 0;
-    var pst = parseFloat(document.getElementById('pst-' + id).value) || 0;
+    var gstCb = document.getElementById('gst-' + id);
+    var pstCb = document.getElementById('pst-' + id);
+    var gst = gstCb && gstCb.checked ? Math.round(amt * 0.05 * 100) / 100 : 0;
+    var pst = pstCb && pstCb.checked ? Math.round(amt * 0.07 * 100) / 100 : 0;
     var dsc = document.getElementById('desc-' + id).value.trim();
     if (!edate || !cat || isNaN(amt) || amt <= 0 || !dsc) {
       errEl.textContent = 'Please complete all lines: date, category, amount, and description required.';
       errEl.style.display = ''; return;
     }
-    lines.push({ edate: edate, cat: cat, amt: amt, gst: gst, pst: pst, dsc: dsc, gt: (amt + gst + pst).toFixed(2) });
+    var gt = Math.round((amt + gst + pst) * 100) / 100;
+    lines.push({ edate: edate, cat: cat, amt: amt, gst: gst, pst: pst, dsc: dsc, gt: gt.toFixed(2) });
   }
   errEl.style.display = 'none';
 
@@ -322,14 +363,13 @@ function submitAll() {
 
   var total = 0;
   for (var k = 0; k < lines.length; k++) total += parseFloat(lines[k].gt);
+  total = Math.round(total * 100) / 100;
 
-  document.getElementById('conf-ref').textContent = refId;
-  document.getElementById('conf-submitted').textContent = fmtFull(new Date());
   document.getElementById('conf-subj').textContent = refId;
-  document.getElementById('conf-period').textContent = p ? ('Period ' + p.num + ' (' + fmt(p.start) + ' \u2013 ' + fmt(p.end) + ')') : 'Outside configured periods';
-  document.getElementById('conf-cutoff').textContent = p ? ('This period\u2019s cutoff: ' + fmtFull(p.cutoff)) : 'Contact HR';
+  document.getElementById('conf-period').textContent = p ? ('Period ' + p.num + ' \u00b7 ' + fmt(p.start) + ' \u2013 ' + fmt(p.end)) : 'Outside configured periods';
+  document.getElementById('conf-cutoff').textContent = p ? ('Cutoff: ' + fmtFull(p.cutoff)) : 'Contact HR';
 
-  var html = '<strong>' + fn + ' ' + ln + '</strong> \u2014 ' + lines.length + (lines.length > 1 ? ' expenses' : ' expense') + '<br><br>';
+  var html = '<div style="font-size:13px;color:' + 'var(--success-text);margin-bottom:8px;"><strong>' + fn + ' ' + ln + '</strong> \u2014 ' + lines.length + (lines.length > 1 ? ' expenses' : ' expense') + '</div>';
   for (var m = 0; m < lines.length; m++) {
     var li = lines[m];
     html += '<div class="conf-line"><strong>' + refId + '-' + (m+1) + '</strong> \u2014 ' + li.cat + ' \u2014 ' + fmtFull(new Date(li.edate+'T12:00:00')) + '<br>';
@@ -339,7 +379,7 @@ function submitAll() {
     html += '<br>Total: <strong>$' + li.gt + '</strong><br>';
     html += '<span style="font-size:12px;opacity:.75;">' + li.dsc + '</span></div>';
   }
-  if (lines.length > 1) html += '<div style="padding-top:8px;font-weight:500;">Submission total: $' + total.toFixed(2) + '</div>';
+  if (lines.length > 1) html += '<div style="padding-top:8px;font-size:13px;font-weight:500;color:var(--success-text);">Submission total: $' + total.toFixed(2) + '</div>';
 
   document.getElementById('conf-meta').innerHTML = html;
   document.getElementById('form-view').style.display = 'none';
