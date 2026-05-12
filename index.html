@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AEL Expense Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+:root {
+  --bg: #f5f4f0; --surface: #ffffff; --border: #e0ddd6;
+  --border-strong: #c8c4bb; --text: #1a1916; --text-muted: #6b6860;
+  --text-faint: #9e9b93; --accent: #1a1916;
+  --success-bg: #eef5ee; --success-border: #b8d4b8; --success-text: #2d5a2d;
+  --danger-bg: #fcebeb; --danger-border: #f09595; --danger-text: #a32d2d;
+  --info-bg: #f0ede6;
+  --mono: 'IBM Plex Mono', monospace; --sans: 'IBM Plex Sans', sans-serif;
+  --radius: 6px; --radius-lg: 10px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2.5rem 1rem 4rem; }
+.container { width: 100%; max-width: 540px; }
+.header { margin-bottom: 2rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+.header-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.logo-mark { width: 28px; height: 28px; background: var(--accent); border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+.logo-mark i { font-size: 16px; color: #fff; }
+.header h1 { font-size: 15px; font-weight: 500; }
+.header p { font-size: 12px; color: var(--text-faint); font-family: var(--mono); margin-left: 38px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field { margin-bottom: 12px; }
+.field:last-child { margin-bottom: 0; }
+.field label { display: block; font-size: 11px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 4px; }
+.field input, .field select, .field textarea { width: 100%; font-family: var(--sans); font-size: 14px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 9px 12px; outline: none; transition: border-color 0.15s; -webkit-appearance: none; appearance: none; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); background: #fff; }
+.field textarea { resize: vertical; min-height: 60px; line-height: 1.5; }
+.field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b6860' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.sub-date-row { display: flex; align-items: center; justify-content: space-between; }
+.sub-date-row .lbl { font-size: 11px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
+.sub-date-row .val { font-size: 13px; font-weight: 500; font-family: var(--mono); }
+.period-badge { display: none; margin-top: 8px; background: var(--info-bg); border-radius: var(--radius); padding: 8px 12px; font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.line-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 0.875rem; }
+.line-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.line-lbl { font-size: 11px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
+.remove-btn { background: none; border: none; cursor: pointer; font-size: 12px; color: var(--text-faint); padding: 2px 6px; border-radius: 4px; }
+.remove-btn:hover { color: #a32d2d; background: #fdf0ef; }
+.line-total-row { display: none; justify-content: space-between; align-items: center; background: var(--bg); border-radius: var(--radius); padding: 8px 12px; margin-bottom: 12px; }
+.line-total-row .lbl { font-size: 11px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; color: var(--text-muted); }
+.line-total-row .val { font-family: var(--mono); font-size: 13px; font-weight: 500; }
+.add-btn { width: 100%; padding: 10px; font-family: var(--sans); font-size: 13px; font-weight: 500; border-radius: var(--radius); cursor: pointer; background: transparent; color: var(--text); border: 1px dashed var(--border-strong); margin-bottom: 1rem; }
+.add-btn:hover { background: var(--info-bg); }
+.sub-total-row { display: none; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 1rem; margin-bottom: 1rem; }
+.sub-total-row .lbl { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.sub-total-row .val { font-family: var(--mono); font-size: 17px; font-weight: 500; }
+.err { font-size: 12px; color: #a32d2d; margin-bottom: 8px; display: none; }
+.btn-submit { width: 100%; padding: 11px; font-family: var(--sans); font-size: 14px; font-weight: 500; border-radius: var(--radius); cursor: pointer; background: var(--accent); color: #fff; border: none; }
+.btn-submit:hover { opacity: 0.85; }
+.confirm-green { background: var(--success-bg); border: 1px solid var(--success-border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
+.conf-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--success-border); }
+.conf-top .sublbl { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--success-text); opacity: .7; margin-bottom: 4px; }
+.conf-ref { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--success-text); letter-spacing: 2px; }
+.conf-submitted { font-size: 13px; font-weight: 500; color: var(--success-text); }
+.conf-added-lbl { font-size: 11px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--success-text); opacity: .7; margin-bottom: 8px; }
+.conf-period { font-size: 22px; font-weight: 500; color: var(--success-text); margin-bottom: 4px; }
+.conf-cutoff { font-size: 13px; color: var(--success-text); opacity: .8; margin-bottom: 1.25rem; }
+.conf-meta { font-size: 13px; color: var(--success-text); line-height: 1.75; }
+.conf-line { border-bottom: 1px solid var(--success-border); padding: 8px 0; }
+.conf-line:last-child { border-bottom: none; }
+.confirm-red { background: var(--danger-bg); border: 1px solid var(--danger-border); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+.confirm-red .ns-lbl { font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--danger-text); margin-bottom: 6px; }
+.confirm-red p { font-size: 13px; line-height: 1.6; color: var(--danger-text); }
+.conf-subj { font-family: var(--mono); font-size: 14px; background: #fff; border: 1px solid var(--danger-border); border-radius: var(--radius); padding: 10px 12px; margin-top: 8px; font-weight: 500; word-break: break-all; color: var(--danger-text); display: block; }
+.confirm-red .note { font-size: 12px; color: var(--danger-text); opacity: .8; margin-top: 8px; }
+.btn-reset { width: 100%; padding: 10px; font-family: var(--sans); font-size: 13px; border-radius: var(--radius); cursor: pointer; background: transparent; border: 1px solid var(--border-strong); color: var(--text); }
+.btn-reset:hover { background: var(--bg); }
+.footer { margin-top: 1.5rem; text-align: center; font-size: 11px; color: var(--text-faint); font-family: var(--mono); }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header-top">
+      <div class="logo-mark"><i class="ti ti-helicopter" aria-hidden="true"></i></div>
+      <h1>AEL Expense Portal</h1>
+    </div>
+    <p>Airborne Engines Ltd.</p>
+  </div>
+
+  <div id="form-view">
+    <div class="card">
+      <div class="row2" style="margin-bottom:12px;">
+        <div class="field"><label>First name</label><input type="text" id="fname" placeholder="Juan" autocomplete="given-name"></div>
+        <div class="field"><label>Last name</label><input type="text" id="lname" placeholder="Dela Cruz" autocomplete="family-name"></div>
+      </div>
+      <div class="sub-date-row">
+        <span class="lbl">Submission date</span>
+        <span class="val" id="today-display"></span>
+      </div>
+      <div class="period-badge" id="period-badge"></div>
+    </div>
+
+    <div id="line-items"></div>
+
+    <button class="add-btn" onclick="addLine()">+ Add another expense</button>
+
+    <div class="sub-total-row" id="sub-total-row">
+      <span class="lbl">Submission total</span>
+      <span class="val" id="sub-total-amt">$0.00</span>
+    </div>
+
+    <div class="err" id="form-err"></div>
+    <button class="btn-submit" onclick="submitAll()">Submit expense</button>
+  </div>
+
+  <div id="confirm-view" style="display:none;">
+    <div class="confirm-green">
+      <div class="conf-top">
+        <div>
+          <div class="sublbl">Reference</div>
+          <div class="conf-ref" id="conf-ref"></div>
+        </div>
+        <div style="text-align:right;">
+          <div class="sublbl">Submitted</div>
+          <div class="conf-submitted" id="conf-submitted"></div>
+        </div>
+      </div>
+      <div class="conf-added-lbl">Your expense will be added to</div>
+      <div class="conf-period" id="conf-period"></div>
+      <div class="conf-cutoff" id="conf-cutoff"></div>
+      <div class="conf-meta" id="conf-meta"></div>
+    </div>
+
+    <div class="confirm-red">
+      <div class="ns-lbl">⚠️ Next step — email your receipts</div>
+      <p>Send all receipts to <strong>ap@airborneengines.com</strong> with the subject line:</p>
+      <span class="conf-subj" id="conf-subj"></span>
+      <div class="note">Your expense will be processed in the payroll period shown above.</div>
+    </div>
+
+    <button class="btn-reset" onclick="resetForm()">Submit another expense</button>
+  </div>
+
+  <div class="footer">expenses.ael &mdash; submissions go directly to payroll</div>
+</div>
+
+<script>
+var SHEET_URL = 'https://script.google.com/macros/s/AKfycbzFC_tvjiQCTAEEMuWCndY09gVGznUsF-w3a0m4xp7rzr1zGH6N8571sN2Ue2y8ToBj/exec';
+var lineCount = 0;
+var subCtr = parseInt(localStorage.getItem('ael_ctr') || '0');
+var TODAY_STR = new Date().toISOString().slice(0, 10);
+
+var PERIODS = [];
+(function() {
+  var s = new Date('2026-03-29T12:00:00');
+  for (var i = 8; i <= 34; i++) {
+    var e = new Date(s.getTime()); e.setDate(e.getDate() + 13);
+    var c = new Date(e.getTime()); c.setDate(c.getDate() + 2);
+    PERIODS.push({ num: i, start: new Date(s.getTime()), end: new Date(e.getTime()), cutoff: new Date(c.getTime()) });
+    s.setDate(s.getDate() + 14);
+  }
+})();
+
+function fmt(d) { return d.toLocaleDateString('en-CA', { month: 'short', day: 'numeric' }); }
+function fmtFull(d) { return d.toLocaleDateString('en-CA', { year: 'numeric', month: 'short', day: 'numeric' }); }
+function getPeriod(ds) {
+  var d = new Date(ds + 'T12:00:00');
+  for (var i = 0; i < PERIODS.length; i++) {
+    if (d >= PERIODS[i].start && d <= PERIODS[i].end) return PERIODS[i];
+  }
+  return null;
+}
+function genId() {
+  subCtr++;
+  localStorage.setItem('ael_ctr', subCtr);
+  var n = String(subCtr);
+  while (n.length < 4) n = '0' + n;
+  return 'EXP-' + n;
+}
+
+(function() {
+  document.getElementById('today-display').textContent = fmtFull(new Date());
+  var p = getPeriod(TODAY_STR);
+  var el = document.getElementById('period-badge');
+  if (p) {
+    el.innerHTML = 'Will be included in <strong>Period ' + p.num + '</strong> (' + fmt(p.start) + ' \u2013 ' + fmt(p.end) + ') \u2014 cutoff <strong>' + fmtFull(p.cutoff) + '</strong>';
+  } else {
+    el.textContent = 'Submission date outside configured pay periods \u2014 contact HR.';
+  }
+  el.style.display = '';
+})();
+
+function addLine() {
+  lineCount++;
+  var idx = lineCount;
+  var wrap = document.createElement('div');
+  wrap.className = 'line-item';
+  wrap.id = 'line-' + idx;
+
+  var hdr = document.createElement('div'); hdr.className = 'line-hdr';
+  var lbl = document.createElement('span'); lbl.className = 'line-lbl li-lbl'; lbl.textContent = 'Expense ' + idx;
+  hdr.appendChild(lbl);
+  if (idx > 1) {
+    var rb = document.createElement('button'); rb.className = 'remove-btn'; rb.textContent = 'Remove';
+    rb.setAttribute('data-idx', idx);
+    rb.addEventListener('click', function() { removeLine(parseInt(this.getAttribute('data-idx'))); });
+    hdr.appendChild(rb);
+  }
+  wrap.appendChild(hdr);
+
+  function mf(labelText, inputEl) {
+    var f = document.createElement('div'); f.className = 'field';
+    var l = document.createElement('label'); l.textContent = labelText;
+    f.appendChild(l); f.appendChild(inputEl); return f;
+  }
+
+  var di = document.createElement('input'); di.type = 'date'; di.id = 'edate-' + idx; di.valueAsDate = new Date();
+  wrap.appendChild(mf('Date of expense', di));
+
+  var cs = document.createElement('select'); cs.id = 'cat-' + idx;
+  ['', 'Meals', 'Travel / accommodation', 'Mileage', 'Office supplies', 'Phone reimbursement', 'Other'].forEach(function(o) {
+    var opt = document.createElement('option'); opt.value = o; opt.textContent = o || 'Select a category'; cs.appendChild(opt);
+  });
+  wrap.appendChild(mf('Category', cs));
+
+  var r3 = document.createElement('div'); r3.className = 'row3 field';
+  [['Amount (CAD)', 'amt-' + idx], ['GST (optional)', 'gst-' + idx], ['PST (optional)', 'pst-' + idx]].forEach(function(fd) {
+    var f = document.createElement('div');
+    var l = document.createElement('label'); l.textContent = fd[0];
+    var inp = document.createElement('input'); inp.type = 'number'; inp.id = fd[1]; inp.placeholder = '0.00'; inp.min = '0'; inp.step = '0.01';
+    inp.addEventListener('input', function() { calcLineTotal(idx); calcSubTotal(); });
+    f.appendChild(l); f.appendChild(inp); r3.appendChild(f);
+  });
+  wrap.appendChild(r3);
+
+  var lt = document.createElement('div'); lt.className = 'line-total-row'; lt.id = 'lt-' + idx;
+  var ltl = document.createElement('span'); ltl.className = 'lbl'; ltl.textContent = 'Line total';
+  var lta = document.createElement('span'); lta.className = 'val'; lta.id = 'lta-' + idx;
+  lt.appendChild(ltl); lt.appendChild(lta); wrap.appendChild(lt);
+
+  var ta = document.createElement('textarea'); ta.id = 'desc-' + idx; ta.placeholder = 'Vendor, purpose, trip details, etc.';
+  wrap.appendChild(mf('Description', ta));
+
+  document.getElementById('line-items').appendChild(wrap);
+  calcSubTotal();
+}
+
+function removeLine(idx) {
+  var el = document.getElementById('line-' + idx);
+  if (el) el.remove();
+  var items = document.querySelectorAll('#line-items > div');
+  for (var i = 0; i < items.length; i++) {
+    var l = items[i].querySelector('.li-lbl');
+    if (l) l.textContent = 'Expense ' + (i + 1);
+  }
+  calcSubTotal();
+}
+
+function calcLineTotal(idx) {
+  var a = parseFloat(document.getElementById('amt-' + idx).value) || 0;
+  var g = parseFloat(document.getElementById('gst-' + idx).value) || 0;
+  var p = parseFloat(document.getElementById('pst-' + idx).value) || 0;
+  var t = a + g + p;
+  var lt = document.getElementById('lt-' + idx);
+  if (t > 0) { document.getElementById('lta-' + idx).textContent = '$' + t.toFixed(2); lt.style.display = 'flex'; }
+  else { lt.style.display = 'none'; }
+}
+
+function calcSubTotal() {
+  var items = document.querySelectorAll('#line-items > div');
+  var grand = 0;
+  for (var i = 0; i < items.length; i++) {
+    var id = items[i].id.replace('line-', '');
+    grand += (parseFloat(document.getElementById('amt-' + id).value) || 0)
+           + (parseFloat(document.getElementById('gst-' + id).value) || 0)
+           + (parseFloat(document.getElementById('pst-' + id).value) || 0);
+  }
+  var row = document.getElementById('sub-total-row');
+  if (items.length > 1 && grand > 0) { document.getElementById('sub-total-amt').textContent = '$' + grand.toFixed(2); row.style.display = 'flex'; }
+  else { row.style.display = 'none'; }
+}
+
+function submitAll() {
+  var fn = document.getElementById('fname').value.trim();
+  var ln = document.getElementById('lname').value.trim();
+  var errEl = document.getElementById('form-err');
+  if (!fn || !ln) { errEl.textContent = 'Please enter your name.'; errEl.style.display = ''; return; }
+
+  var items = document.querySelectorAll('#line-items > div');
+  if (items.length === 0) { errEl.textContent = 'Please add at least one expense.'; errEl.style.display = ''; return; }
+
+  var lines = [];
+  for (var i = 0; i < items.length; i++) {
+    var id = items[i].id.replace('line-', '');
+    var edate = document.getElementById('edate-' + id).value;
+    var cat = document.getElementById('cat-' + id).value;
+    var amt = parseFloat(document.getElementById('amt-' + id).value);
+    var gst = parseFloat(document.getElementById('gst-' + id).value) || 0;
+    var pst = parseFloat(document.getElementById('pst-' + id).value) || 0;
+    var dsc = document.getElementById('desc-' + id).value.trim();
+    if (!edate || !cat || isNaN(amt) || amt <= 0 || !dsc) {
+      errEl.textContent = 'Please complete all lines: date, category, amount, and description required.';
+      errEl.style.display = ''; return;
+    }
+    lines.push({ edate: edate, cat: cat, amt: amt, gst: gst, pst: pst, dsc: dsc, gt: (amt + gst + pst).toFixed(2) });
+  }
+  errEl.style.display = 'none';
+
+  var p = getPeriod(TODAY_STR);
+  var refId = genId();
+  var payPeriod = p ? ('Period ' + p.num + ': ' + fmt(p.start) + ' - ' + fmt(p.end)) : 'Outside configured periods';
+  var cutoff = p ? fmtFull(p.cutoff) : '-';
+
+  for (var j = 0; j < lines.length; j++) {
+    var l = lines[j];
+    fetch(SHEET_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: refId+'-'+(j+1), referenceId: refId, firstName: fn, lastName: ln, category: l.cat, amount: l.amt, gst: l.gst||'', pst: l.pst||'', grandTotal: l.gt, expenseDate: l.edate, submittedDate: TODAY_STR, payPeriod: payPeriod, cutoffDate: cutoff, description: l.dsc })
+    }).catch(function(){});
+  }
+
+  var total = 0;
+  for (var k = 0; k < lines.length; k++) total += parseFloat(lines[k].gt);
+
+  document.getElementById('conf-ref').textContent = refId;
+  document.getElementById('conf-submitted').textContent = fmtFull(new Date());
+  document.getElementById('conf-subj').textContent = refId;
+  document.getElementById('conf-period').textContent = p ? ('Period ' + p.num + ' (' + fmt(p.start) + ' \u2013 ' + fmt(p.end) + ')') : 'Outside configured periods';
+  document.getElementById('conf-cutoff').textContent = p ? ('This period\u2019s cutoff: ' + fmtFull(p.cutoff)) : 'Contact HR';
+
+  var html = '<strong>' + fn + ' ' + ln + '</strong> \u2014 ' + lines.length + (lines.length > 1 ? ' expenses' : ' expense') + '<br><br>';
+  for (var m = 0; m < lines.length; m++) {
+    var li = lines[m];
+    html += '<div class="conf-line"><strong>' + refId + '-' + (m+1) + '</strong> \u2014 ' + li.cat + ' \u2014 ' + fmtFull(new Date(li.edate+'T12:00:00')) + '<br>';
+    html += 'Amount: $' + li.amt.toFixed(2);
+    if (li.gst) html += ' &nbsp;GST: $' + li.gst.toFixed(2);
+    if (li.pst) html += ' &nbsp;PST: $' + li.pst.toFixed(2);
+    html += '<br>Total: <strong>$' + li.gt + '</strong><br>';
+    html += '<span style="font-size:12px;opacity:.75;">' + li.dsc + '</span></div>';
+  }
+  if (lines.length > 1) html += '<div style="padding-top:8px;font-weight:500;">Submission total: $' + total.toFixed(2) + '</div>';
+
+  document.getElementById('conf-meta').innerHTML = html;
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('confirm-view').style.display = '';
+}
+
+function resetForm() {
+  document.getElementById('fname').value = '';
+  document.getElementById('lname').value = '';
+  document.getElementById('line-items').innerHTML = '';
+  document.getElementById('sub-total-row').style.display = 'none';
+  document.getElementById('form-err').style.display = 'none';
+  document.getElementById('form-view').style.display = '';
+  document.getElementById('confirm-view').style.display = 'none';
+  lineCount = 0;
+  addLine();
+}
+
+addLine();
+</script>
+</body>
+</html>
